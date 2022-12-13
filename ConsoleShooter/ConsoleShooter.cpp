@@ -28,7 +28,43 @@ const double deg360 = M_PI * 2;
 const int blockSize = 64;
 
 //load level; remember second number is x while first is y
-char level[9][9] = {
+const int ROWS = 9;
+const int COLUMNS = 9;
+
+class Level {
+public:
+    char array[ROWS][COLUMNS];
+    Level(std::string filename) {
+        // Open the input file
+        std::ifstream inputFile(filename);
+
+        // Read the data from the file and store it in the array
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
+                inputFile >> array[i][j];
+            }
+        }
+
+        // Close the input file
+        inputFile.close();
+    }
+    int getWidth() {
+        return sizeof(array[0]);
+    }
+    int getHeight() {
+        return sizeof(array);
+    }
+    void print() {
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getHeight(); x++) {
+                std::cout << array[y][x] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+};
+
+/*char level[9][9] = {
     {'#','#','#','#','#','#','#','#','#'},
     {'#',' ',' ',' ',' ',' ',' ',' ','#'},
     {'#',' ',' ',' ','#','#','#',' ','#'},
@@ -38,9 +74,7 @@ char level[9][9] = {
     {'#',' ','#','#','#','#','#',' ','#'},
     {'#',' ',' ',' ',' ',' ',' ',' ','#'},
     {'#','#','#','#','#','#','#','#','#'},
-};
-int mapColumns = sizeof(level[0]);
-int mapRows = sizeof(level);
+};*/
 
 /*void renderFrame(char screen[screenWidth][screenHeight], int playerX, int playerY, double view) {
     for (int i = 0; i < screenWidth; i++) {
@@ -151,12 +185,16 @@ int main()
 
     //std::cout << "here" << std::endl;
 
+    Level level("maps/01.txt");
+
     while (true) {
         system("CLS");
 
         renderFrame(screen, playerX, playerY, view);
 
         printScreen(screen);
+
+        level.print();
 
         view += moveView;
     }
